@@ -22,7 +22,7 @@
     <input id="requeteXPATH" type="text" />
 
     <h3>Résultat</h3>
-    <textarea id="resultatRequete" disabled></textarea>
+    <textarea id="resultatRequete" style=" width:100%;  height:300px;" disabled></textarea>
   </div>
 
 <div>
@@ -40,14 +40,34 @@
     racine = xmldoc.documentElement;
     entites = racine.tagName;
     entite = racine.children[0].tagName;
-    nbEntite = racine.children.length;
+    nbEntite = racine.childElementCount;
 
     document.querySelector('#entite').innerText = entites;
-    document.querySelector('#valeurEntite').innerText = entite
-    document.querySelector('#nbEntite').innerText = nbEntite
+    document.querySelector('#valeurEntite').innerText = entite;
+    document.querySelector('#nbEntite').innerText = nbEntite;
 
   }
 
+  const requete = document.querySelector('#requeteXPATH');
+
+  requete.onkeyup = function(){
+    text = document.querySelector('#textArea').value;
+    xpath = this.value
+    const parser = new DOMParser();
+    const xmldoc = parser.parseFromString(text, 'text/xml');
+
+    nodes = xmldoc.evaluate(xpath, xmldoc, null, XPathResult.ANY_TYPE, null);
+
+    let result = nodes.iterateNext();
+
+    while (result) {
+      // do something with result...
+      str = new XMLSerializer().serializeToString(result);
+      result = nodes.iterateNext();
+      document.querySelector('#resultatRequete').innerText = str;
+    }
+
+  }
 
 
 </script>
