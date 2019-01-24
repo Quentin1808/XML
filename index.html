@@ -4,7 +4,7 @@
   <title>XPATH JS</title>
 </head>
 <body>
-
+<div id="content">
   <h1>XPATH JS</h1>
   <hr>
   <h2>Document XML</h2>
@@ -12,9 +12,30 @@
   <textarea id="textArea"></textarea>
 
   <div id="inspectionRapide">
-    <p>Le document traite de <span id="entite"></span></p>
-    <p>Il contient <span id="nbEntite"></span> <span id="valeurEntite"></span></p>
+    <p>Le document traite de <span style="background-color: silver" id="entite"></span></p>
+    <p>Il contient <span style="background-color: silver" id="nbEntite"></span> <span style="background-color: silver" id="valeurEntite"></span></p>
   </div>
-
+<div>
 </body>
 </html>
+
+<script>
+  const demo = document.querySelector('#textArea');
+
+  demo.onkeyup = function(){
+    text = this.value;
+    const parser = new DOMParser();
+    const xmldoc = parser.parseFromString(text, 'text/xml');
+
+    racine = xmldoc.documentElement;
+    entites = racine.tagName;
+    entite = racine.children[0].tagName;
+    nbEntite = racine.children.length;
+
+    document.querySelector('#entite').innerText = entites;
+    document.querySelector('#valeurEntite').innerText = entite
+    document.querySelector('#nbEntite').innerText = nbEntite
+
+  }
+
+</script>
